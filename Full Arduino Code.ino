@@ -28,6 +28,9 @@ Servo myservo;
 #include <Wire.h>
 LiquidCrystal_I2C lcd(0X27,16,2);
 
+//Millis
+unsigned long Prev_Millis = 0;
+
 void setup() {
 //Ultrasonic
 Serial.begin(9600);
@@ -63,8 +66,7 @@ void displayNumber(int *number) {
   }
 }
 
-void distance(){
-delay(50);                     // Wait 50ms between pings (about 20 pings/sec). 29ms should be the shortest delay between pings.
+void distance(){                    
 Serial.print("Ping: ");
 Serial.print(sonar.ping_cm()); // Send ping, get distance in cm and print result (0 = outside set distance range)
 Serial.println("cm"); 
@@ -89,11 +91,34 @@ displayNumber(numbers[0]);
 }  
 }
 
+void Payment(){
+ lcd.clear();
+ lcd.setCursor(0,0);
+ lcd.print("Amount Required");
+ lcd.setCursor(0,1);
+ lcd.print("$");
+ lcd.println(amount);
+ myservo.write(80);
+  
 void loop() {
+unsigned long Current_Millis = millis();
+ if(Current_Millis - Prev_Millis >= 100){
+   Prev_Millis = Current_Millis;
+   if (Serial.available() > 0) {
+    
+    // Read it into our string
+    String data = Serial.readStringUntil('\n');
+    Serial.print("sent data");
+    Serial.println(data);
+     if(data == "Down"){
+      myservo.write(170);
+    }else if (data == "Up"){
+      myservo.write(80);
+    }
+   }
+   
 delay(50);                     // Wait 50ms between pings (about 20 pings/sec). 29ms should be the shortest delay between pings.
-Serial.print("Ping: ");
-Serial.print(sonar.ping_cm()); // Send ping, get distance in cm and print result (0 = outside set distance range)
-Serial.println("cm"); 
-delay(1000);
+distance();
+delay(600);
 led_change();
 }
