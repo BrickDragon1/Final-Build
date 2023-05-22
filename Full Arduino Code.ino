@@ -91,31 +91,30 @@ displayNumber(numbers[0]);
 }  
 }
 
-void Payment(){
- lcd.clear();
- lcd.setCursor(0,0);
- lcd.print("Amount Required");
- lcd.setCursor(0,1);
- lcd.print("$");
- lcd.println(amount);
- myservo.write(80);
-  
 void loop() {
-unsigned long Current_Millis = millis();
- if(Current_Millis - Prev_Millis >= 100){
-   Prev_Millis = Current_Millis;
-   if (Serial.available() > 0) {
-    
+if (Serial.available() > 0) {
     // Read it into our string
     String data = Serial.readStringUntil('\n');
     Serial.print("sent data");
     Serial.println(data);
-     if(data == "Down"){
+     if(data == "LCDFalse"){
+       lcd.clear();
+       lcd.setCursor(0,0);
+       lcd.print("Unsufficient funds");
+     else if (data == "LCDTrue1"){
+       lcd.clear();
+       lcd.setCursor(0,0);
+       lcd.print(time_amount) //Future plan for grabbing payment done by sending data, seperating data and printing data
+     else if (data == "LCDTrue"){
+       lcd.clear();
+       lcd.setCursor(0,0);
+       lcd.print("Drive On Thru")
+    }else if (data == "MSFalse"){
       myservo.write(170);
-    }else if (data == "Up"){
-      myservo.write(80);
-    }
+    }else if (data == "MSTrue"){
+       myservo.write(80);
    }
+  
    
 delay(50);                     // Wait 50ms between pings (about 20 pings/sec). 29ms should be the shortest delay between pings.
 distance();
