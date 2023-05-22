@@ -27,12 +27,13 @@ if(CVC == CVC_1 and Cardnum == Cardnum1):
     print("Access Granted")
     if (time_elapsed < 60000000000000000000):
         time_amount = 0
+        ser.write(b"MSTrue\n")
     else:
         time_amount = int((0.00000000000003*time_elapsed)/100000000000000)
 
     if(Amount >= time_amount):
+        ser.write(b"LCDTrue1\n")
         Amount1 = Amount - time_amount 
-        print(Amount1)
         ser.write(b"LCDTrue\n")
         ser.write(b"MSTrue\n") 
         time.sleep(1)
