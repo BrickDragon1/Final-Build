@@ -101,11 +101,11 @@ if (Serial.available() > 0) {
        lcd.clear();
        lcd.setCursor(0,0);
        lcd.print("Unsufficient funds");
-     else if (data == "LCDTrue1"){
+     }else if (data == "LCDTrue1"){
        lcd.clear();
        lcd.setCursor(0,0);
        lcd.print(time_amount) //Future plan for grabbing payment done by sending data, seperating data and printing data
-     else if (data == "LCDTrue"){
+       } else if (data == "LCDTrue"){
        lcd.clear();
        lcd.setCursor(0,0);
        lcd.print("Drive On Thru")
